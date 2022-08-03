@@ -69,6 +69,11 @@
               <li class="{{ request()->is('tracking-loading') ? 'active' : '' }}">
                 <a href="{{ route('history_tracking_loading') }}">History</a>
               </li>
+              <!-- Tracking Loading Setting (Sidik) -->
+              <li class="{{ request()->segment(2) == 'settings' ? 'active' : '' }}">
+                <a href="/tracking-loading/settings">Setting</a>
+              </li>
+              <!-- Tracking Loading Setting (Sidik) -->
             </ul>
           </li>
           <li class="{{ str_contains(Request::url(), 'corrective') ? 'active' : '' }}">

@@ -104,5 +104,16 @@ Route::middleware('auth')->group(function () {
       Route::get('/listHistory', 'trackingLoading\historyController@listHistory');
       Route::get('/pdf', 'trackingLoading\historyController@printPdf');
       Route::get('/excel', 'trackingLoading\historyController@printExcel');
+
+        Route::get('/settings', 'trackingLoading\BmVisitTrackSettingController@index')->middleware('auth');
+        Route::post("/settings", 'trackingLoading\BmVisitTrackSettingController@createOrUpdate')->middleware('auth');
+        Route::post('/settings/datatable', 'trackingLoading\BmVisitTrackSettingController@getData')->middleware('auth');
+        Route::delete('/settings/{id}', 'trackingLoading\BmVisitTrackSettingController@destroy')->middleware('auth');
+
+        Route::get("/settings/size-types", "trackingLoading\BmVisitTrackSettingSizeTypeController@index")->middleware('auth');
+        Route::post("/settings/size-types/create-update", "trackingLoading\BmVisitTrackSettingSizeTypeController@createOrUpdate")->middleware('auth');
+        Route::post("/settings/size-types/datatable", "trackingLoading\BmVisitTrackSettingSizeTypeController@getData")->middleware('auth');
+        Route::delete("/settings/size-types/{id}", "trackingLoading\BmVisitTrackSettingSizeTypeController@destroy")->middleware('auth');
+
     });
 });

@@ -69,3 +69,103 @@
 
 {{-- toastr --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script>
+    function submitAjax(form_id) {
+        $("button[type='submit']").attr('disabled', true);
+        var form = $(form_id),
+        url = form.attr('action'),
+        method = $('input[name=_method]').val() == undefined ? 'POST' : 'PUT';
+        message = method == 'POST' ? 'Saved' : 'Updated',
+            module_name = form.attr('title');
+        formData = new FormData(form[0]);
+        form.find('.error').remove();
+
+        $(".form-control").removeClass('is-invalid');
+        $(".custom-file-input").removeClass('is-invalid');
+        // console.log(url);
+
+        $('.card').find('.error').remove();
+        $('table > tbody  > tr').each(function(index, tr) {
+
+            console.log(index);
+            $('table tbody tr').eq(index).removeClass('red');
+
+        });
+
+        $.ajax({
+            url: url,
+            method: 'POST',
+            cache: false,
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (response) {
+                $("button[type='submit']").attr('disabled', false);
+                
+                if (response.error == false) {
+                    if(response.code == 201 || response.code == 200){
+                        form.trigger('reset');
+                        $(".select2").val('').trigger('change');
+                        $("#baris_preview_img").empty();
+
+                        $('#table').DataTable().ajax.reload();
+                        toastr.success(response.message);
+                        $(".modal").modal("hide");
+
+                    }
+
+                    // $('#table').DataTable().ajax.reload();
+                    // toastr.success(response.message);
+                    // $(".modal").modal("hide");
+                }else{
+                    if(response.code == 422){
+                        toastr.error(response.message);
+                        $.each(response.errors, function (key, value) {
+                            $('#' + key)
+                                .closest('.form-control')
+                                .addClass('is-invalid')
+                            $('#' + key)
+                                .closest('.form-group')
+                                .append('<span class="error invalid-feedback">' + value + '</span>')
+                        })
+                    }
+                    // Untuk validasi row table
+                    else if(response.code == 423){
+                        toastr.error(response.message);
+
+                        $.each(response.errors, function (key, value) {
+                            $('#' + key)
+                                .closest('.form-control')
+                                .addClass('is-invalid')
+                            $('#' + key)
+                                .closest('.form-group')
+                                .append('<span class="error invalid-feedback">' + value + '</span>')
+
+
+
+                            row_nya = key.split("_");
+
+
+                            if(row_nya){
+                                $('table tbody tr').eq(row_nya[1]).addClass('red');
+                            }
+
+                        });
+
+
+
+                    }else{
+                        toastr.error(response.message);
+                        // console.log(response.message);
+                    }
+                }
+                $("button[type='submit']").attr('disabled', false);
+            }, 
+            error: (xhr, ajaxOptions, thrownError) => {
+                $("button[type='submit']").attr('disabled', false);
+                toastr.error(thrownError);
+            }
+        })
+    }
+</script>
