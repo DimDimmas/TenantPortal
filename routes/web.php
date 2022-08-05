@@ -104,6 +104,7 @@ Route::middleware('auth')->group(function () {
       Route::get('/listHistory', 'trackingLoading\historyController@listHistory');
       Route::get('/pdf', 'trackingLoading\historyController@printPdf');
       Route::get('/excel', 'trackingLoading\historyController@printExcel');
+      Route::post('/create-update', 'trackingLoading\historyController@createOrUpdate');
 
         Route::get('/settings', 'trackingLoading\BmVisitTrackSettingController@index')->middleware('auth');
         Route::post("/settings", 'trackingLoading\BmVisitTrackSettingController@createOrUpdate')->middleware('auth');

@@ -38,22 +38,54 @@
             <button class="btn btn-success" id="btnGenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp; Generate Excel</button>
           </div>
         </div>
-        <table id="tableList" class="display mb-2" style="color: #353535">
-          <thead>
-            <tr>
-              <th>Capture</th>
-              <th>KTP</th>
-              <th>Scan In</th>
-              <th>Scan Out</th>
-              <th>Duration</th>
-              <th>Type</th>
-            </tr>
-          </thead>
-        </table>
+        <div class="table-responsive">
+          <table id="tableList" class="mb-2 table table-sm" style="color: #353535">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>#</th>
+                <th>Capture</th>
+                <th>Police No</th>
+                <th>KTP</th>
+                <th>Identity No</th>
+                <th>Identity Name</th>
+                <th>Scan In</th>
+                <th>Scan Out</th>
+                <th>Duration</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div id="showImage" class="modal fade" role="dialog"  data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Photo Attendance</h5>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <img src=""  class="img-fluid imageShow" style="width: 100%" alt="Responsive image">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" name="close" id="close" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@include('tracking_loading.history.modal_form')
 @endsection
 
 @push('scripts')
