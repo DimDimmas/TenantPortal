@@ -74,6 +74,9 @@
                 <a href="/tracking-loading/settings">Setting</a>
               </li>
               <!-- Tracking Loading Setting (Sidik) -->
+              <li class="{{ request()->is('tracking-loading/not-scan-out') ? 'active' : '' }}">
+                <a href="{{ route('notscanout_tracking_loading') }}">Not Scan Out</a>
+              </li>
             </ul>
           </li>
           <li class="{{ str_contains(Request::url(), 'corrective') ? 'active' : '' }}">

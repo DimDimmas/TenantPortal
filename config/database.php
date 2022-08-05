@@ -37,7 +37,7 @@ return [
             'driver' => 'sqlsrv',
             'host' => env('DB_HOST', '10.8.1.68'),
             'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'mmp_dev'),
+            'database' => env('DB_DATABASE', 'mmp_mynet'),
             'username' => env('DB_USERNAME', 'DEV_IT'),
             'password' => env('DB_PASSWORD', 'mmp12345'),
             'charset' => 'utf8',

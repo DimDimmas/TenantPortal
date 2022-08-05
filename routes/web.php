@@ -115,5 +115,13 @@ Route::middleware('auth')->group(function () {
         Route::post("/settings/size-types/datatable", "trackingLoading\BmVisitTrackSettingSizeTypeController@getData")->middleware('auth');
         Route::delete("/settings/size-types/{id}", "trackingLoading\BmVisitTrackSettingSizeTypeController@destroy")->middleware('auth');
 
+        Route::prefix('not-scan-out')->group(function () {
+            Route::get('/', 'trackingLoading\notScanOutController@index')->name('notscanout_tracking_loading');
+            Route::get('/listHistory', 'trackingLoading\notScanOutController@listHistory');
+            Route::get('/request-bak/{param}', 'trackingLoading\notScanOutController@requestBak');
+            Route::post('/store', 'trackingLoading\notScanOutController@store');
+            Route::get('/print-pdf', 'trackingLoading\notScanOutController@generate_bak');
+        });
+
     });
 });
