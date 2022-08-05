@@ -177,6 +177,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        
+        // QR code
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
     ],
 
     /*
@@ -231,6 +234,7 @@ return [
         'AppConnection' => App\Helpers\AppConnection::class,
         'AppModel' => App\Helpers\AppModel::class,
         'AppAction' => App\Helpers\AppAction::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     ],
 
 ];

@@ -69,6 +69,9 @@
               <li class="{{ request()->is('tracking-loading') ? 'active' : '' }}">
                 <a href="{{ route('history_tracking_loading') }}">History</a>
               </li>
+              <li class="{{ request()->is('tracking-loading/not-scan-out') ? 'active' : '' }}">
+                <a href="{{ route('notscanout_tracking_loading') }}">Not Scan Out</a>
+              </li>
             </ul>
           </li>
           <li class="{{ str_contains(Request::url(), 'corrective') ? 'active' : '' }}">

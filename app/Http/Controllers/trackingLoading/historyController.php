@@ -27,7 +27,7 @@ class historyController extends Controller
     // $date2 = $date[1];
     $user = Auth::user();
 
-    $data = DB::select("EXEC sp_tp_trackload_history '$user->tenant_code', '$date1', '$date2'");
+    $data = DB::select("EXEC sp_tp_trackload_history 'history', '$user->tenant_code', '$date1', '$date2'");
     return $data;
   }
 
@@ -40,7 +40,8 @@ class historyController extends Controller
   protected function tenant()
   {
     $user = $this->user();
-    $data = DB::table('ifca_ar_debtor')->where('debtor_acct', $user->tenant_code)->first();
+    // $data = DB::table('ifca_ar_debtor')->where('debtor_acct', $user->tenant_code)->first();
+    $data = DB::table('bms_tenant_company')->where('entity_project', $user->entity_project)->where('project_no', $user->project_no)->where('tenant_code', $user->tenant_code)->first();
     return $data;
   }
 

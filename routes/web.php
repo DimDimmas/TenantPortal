@@ -104,5 +104,13 @@ Route::middleware('auth')->group(function () {
       Route::get('/listHistory', 'trackingLoading\historyController@listHistory');
       Route::get('/pdf', 'trackingLoading\historyController@printPdf');
       Route::get('/excel', 'trackingLoading\historyController@printExcel');
+      
+      Route::prefix('not-scan-out')->group(function () {
+          Route::get('/', 'trackingLoading\notScanOutController@index')->name('notscanout_tracking_loading');
+          Route::get('/listHistory', 'trackingLoading\notScanOutController@listHistory');
+          Route::get('/request-bak/{param}', 'trackingLoading\notScanOutController@requestBak');
+          Route::post('/store', 'trackingLoading\notScanOutController@store');
+          Route::get('/print-pdf', 'trackingLoading\notScanOutController@generate_bak');
+      });
     });
 });

@@ -3,7 +3,8 @@
 @section('content')
 <style>
   .btn{
-    border-radius: 0px;
+    /* border-radius: 0px; */
+    text-align: center;
   }
   @media only screen and (max-width: 600px) and (max-width: 768px){
     #btnGeneratePdf, #btnGenerateExcel{
@@ -15,7 +16,7 @@
   <div class="iq-card">
     <div class="iq-card-header d-flex justify-content-between">
       <div class="iq-header-title mt-3">
-      <h4 class="card-title"><b>Tracking Loading History - <i>{{ $tenant->company_name }}</i></b></h4>
+      <h4 class="card-title"><b>Not Scan Out History - <i>{{ $tenant->company_name }}</i></b></h4>
       </div>
     </div>
     <hr>
@@ -33,14 +34,11 @@
               </tr>
             </table>
           </div>
-          <div class="pull-right">
-            <button class="btn btn-danger" id="btnGeneratePdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> &nbsp; Generate PDF</button>
-            <button class="btn btn-success" id="btnGenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp; Generate Excel</button>
-          </div>
         </div>
         <table id="tableList" class="display mb-2" style="color: #353535">
           <thead>
             <tr>
+              <th>Action</th>
               <th>Capture</th>
               <th>KTP</th>
               <th>Scan In</th>
@@ -57,5 +55,5 @@
 @endsection
 
 @push('scripts')
-@include('tracking_loading.history.scripts.scriptIndex')
+@include('tracking_loading.notscanout.scripts.scriptIndex')
 @endpush
