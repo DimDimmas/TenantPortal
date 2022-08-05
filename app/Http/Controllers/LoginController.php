@@ -82,7 +82,7 @@ class LoginController extends Controller
             'password' => 'required|min:4'
             ]);
         if ($this->login_by_auth($request)) {
-            $user = \App\User::where('pic_email1', $request->username)->orWhere('pic_email2', $request->username)->first();
+            $user = User::where('pic_email1', $request->username)->orWhere('pic_email2', $request->username)->first();
             $this->guard('tenant')->login($user, true);
             $primary_user = \App\User::where('pic_email1', $request->username)->first();
             if (!empty($primary_user)) {

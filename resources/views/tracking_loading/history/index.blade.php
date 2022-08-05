@@ -45,7 +45,7 @@
               <th>KTP</th>
               <th>Scan In</th>
               <th>Scan Out</th>
-              <th width="150px">Duration</th>
+              <th>Duration</th>
               <th>Type</th>
             </tr>
           </thead>

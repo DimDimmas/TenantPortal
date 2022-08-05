@@ -61,14 +61,16 @@ class historyController extends Controller
             ->addColumn('img_capture', function($data){
               $html = '';
               $html = '
-                <img src="https://api.mmproperty.com/storage/bms_visit_track/capture/'.$data->image_capture.'" alt="'.$data->image_capture.'" width="200px">
+                <img src="https://api.mmproperty.com/storage/bms_visit_track/capture/'.$data->image_capture.'"
+                  alt="'.$data->image_capture.'" class="img-thumbnail img-fluid rounded" width="100">
               ';
               return $html;
             })
             ->addColumn('img_ktp', function($data){
               $html = '';
               $html = '
-                <img src="https://api.mmproperty.com/storage/bms_visit_track/ktp/'.$data->ktp_attachment.'" alt="'.$data->ktp_attachment.'" width="200px">
+                <img src="https://api.mmproperty.com/storage/bms_visit_track/ktp/'.$data->ktp_attachment.'" 
+                  alt="'.$data->ktp_attachment.'" class="img-thumbnail img-fluid rounded" width="100">
               ';
               return $html;
             })
