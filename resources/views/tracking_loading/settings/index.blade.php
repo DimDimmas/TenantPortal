@@ -74,7 +74,7 @@
       "processing": true,
       "serverSide": true,
       "responsive": true,
-      "order": [[ 0, "DESC" ]],
+      "order": [[ 1, "DESC" ]],
       "ajax":{
         url: '/tracking-loading/settings/datatable',
           "dataType": "json",
