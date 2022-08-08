@@ -77,6 +77,11 @@
               <li class="{{ request()->is('tracking-loading/not-scan-out') ? 'active' : '' }}">
                 <a href="{{ route('notscanout_tracking_loading') }}">Not Scan Out</a>
               </li>
+              <!-- Tracking Loading Report Summary (Sidik) -->
+              <li class="{{ request()->segment(2) == 'report-summary' ? 'active' : '' }}">
+                <a href="/tracking-loading/report-summary">Report Summary</a>
+              </li>
+              <!-- Tracking Loading Report Summary (Sidik) -->
             </ul>
           </li>
           <li class="{{ str_contains(Request::url(), 'corrective') ? 'active' : '' }}">
