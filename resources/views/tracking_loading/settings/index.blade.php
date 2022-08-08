@@ -116,6 +116,8 @@
 
     function openModal() {
       $('#form')[0].reset();
+      $("#id").val("");
+      $("#identifier").val("");
       $('#staticBackdrop').modal('show');
     }
 
