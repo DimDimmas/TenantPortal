@@ -39,18 +39,23 @@
           </div>
         </div>
         <div class="table-responsive">
-          <table id="tableList" class="mb-2 table table-sm" style="color: #353535">
+          <table id="tableList" class="mb-2 table table-sm table-bordered" style="color: #353535">
             <thead>
-                <tr>
-                  <th>Entity Project</th>
-                  <th>Project No</th>
-                  <th>Debtor Acct</th>
-                  <th>Date</th>
-                  <th class="text-right">In</th>
-                  <th class="text-right">Out</th>
-                  <th class="text-right">Total</th>
-                </tr>
-              </thead>
+              <tr>
+                {{-- <th rowspan="2">Entity</th>
+                <th rowspan="2">Tenant Name</th> --}}
+                <th rowspan="2">Date</th>
+                <th rowspan="2">Day</th>
+                <th rowspan="2" style="text-align: center;">Count of Vehicle</th>
+                <th rowspan="1" colspan="3" style="text-align: center;">Duration in Warehouse (Hour)</th>
+                <th rowspan="2" style="text-align: center;">Not Yet Scan Out</th>
+              </tr>
+              <tr>
+                <th style="text-align: center;">Average</th>
+                <th style="text-align: center;">Min</th>
+                <th style="text-align: center;">Max</th>
+              </tr>
+            </thead>
           </table>
         </div>
       </div>
@@ -74,17 +79,16 @@ function getDataTable(dateSelected){
         data: {dateSelected:dateSelected}
       },
       columns: [
-        {data:'entity_project', orderable: false, searchable: false, visible: false},
-        {data:'project_no', orderable: false, searchable: false, visible: false},
-        {data:'debtor_acct', orderable: false, searchable: false, visible: false},
-        {data:'date', render: function(data, type, row, meta){
-          return moment(data).format('DD/MM/YYYY');
-        }},
-        {data:'total_not_scan_out', class: 'text-right'},
-        {data:'total_has_scan_out', class: 'text-right'},
-        {data:'total', class: 'text-right'},
-        // {data:'Max_in_WH', sClass: 'alignRight'},
-        // {data:'total', sClass: 'alignRight'},
+        // {data:'entity_name', orderable: false, searchable: false, visible: false},
+        // {data:'project_no', orderable: false, searchable: false, visible: false},
+        // {data:'debtor_acct', orderable: false, searchable: false, visible: false},
+        {data:'Dates'},
+        {data:'Datenames'},
+        {data:'CountofVihicle', class: 'text-right'},
+        {data:'AvginWH', class: 'text-right'},
+        {data:'Min_in_WH', class: 'text-right'},
+        {data:'Max_in_WH', class: 'text-right'},
+        {data:'NotScanOut', class: 'text-right'},
       ],
     });  
 }
