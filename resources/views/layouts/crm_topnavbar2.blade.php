@@ -75,7 +75,7 @@
               </li>
               <!-- Tracking Loading Setting (Sidik) -->
               <li class="{{ request()->is('tracking-loading/not-scan-out') ? 'active' : '' }}">
-                <a href="{{ route('notscanout_tracking_loading') }}">Not Scan Out</a>
+                <a href="{{ route('notscanout_tracking_loading') }}">Form Lost Ticket</a>
               </li>
               <!-- Tracking Loading Report Summary (Sidik) -->
               <li class="{{ request()->segment(2) == 'report-summary' ? 'active' : '' }}">

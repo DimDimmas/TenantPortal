@@ -16,7 +16,7 @@
   <div class="iq-card">
     <div class="iq-card-header d-flex justify-content-between">
       <div class="iq-header-title mt-3">
-      <h4 class="card-title"><b>Not Scan Out History - <i>{{ $tenant->company_name }}</i></b></h4>
+      <h4 class="card-title"><b>Form Lost Ticket - <i>{{ $tenant->company_name }}</i></b></h4>
       </div>
     </div>
     <hr>
