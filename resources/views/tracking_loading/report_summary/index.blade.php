@@ -74,7 +74,7 @@
 <script>
 function getDataTable(dateSelected){
     $('#tableList').DataTable({
-      order: [[0, 'desc']],
+      // order: [[0, 'desc']],
       dom: 'Bfrtip',
       buttons: [
           // { extend: 'copyHtml5', text: 'Copy', className: 'btn btn-sm btn-info' },
@@ -94,7 +94,9 @@ function getDataTable(dateSelected){
         // {data:'entity_name', orderable: false, searchable: false, visible: false},
         // {data:'project_no', orderable: false, searchable: false, visible: false},
         // {data:'debtor_acct', orderable: false, searchable: false, visible: false},
-        {data:'Dates'},
+        {data:'Dates', render: function(data, type, row, meta) {
+          return moment(row.Dates).format('DD/MM/YYYY');
+        }},
         {data:'Datenames'},
         {data:'CountofVihicle', class: 'text-right'},
         {data:'AvginWH', class: 'text-right'},
