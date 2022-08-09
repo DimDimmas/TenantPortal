@@ -77,9 +77,9 @@ function getDataTable(dateSelected){
       order: [[0, 'desc']],
       dom: 'Bfrtip',
       buttons: [
-          { extend: 'copyHtml5', text: 'Copy', className: 'btn btn-sm btn-info' },
+          // { extend: 'copyHtml5', text: 'Copy', className: 'btn btn-sm btn-info' },
           { extend : 'excelHtml5', text: 'Excell', className: 'btn btn-sm btn-success' },
-          { extend : 'csvHtml5', text: 'CSV', className: 'btn btn-sm btn-success' },
+          // { extend : 'csvHtml5', text: 'CSV', className: 'btn btn-sm btn-success' },
           { extend : 'pdfHtml5', text: 'PDF', className: 'btn btn-sm btn-danger' }
       ],
       processing: true,
