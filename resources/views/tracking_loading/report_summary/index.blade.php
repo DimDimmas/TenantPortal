@@ -46,14 +46,20 @@
                 <th rowspan="2">Tenant Name</th> --}}
                 <th rowspan="2">Date</th>
                 <th rowspan="2">Day</th>
-                <th rowspan="2" style="text-align: center;">Count of Vehicle</th>
-                <th rowspan="1" colspan="3" style="text-align: center;">Duration in Warehouse (Hour)</th>
-                <th rowspan="2" style="text-align: center;">Not Yet Scan Out</th>
+                <th rowspan="2" class="text-center">Count of Vehicle</th>
+                <th rowspan="1"  colspan="5" class="text-center">Count of Vehicle By Time</th>
+                <th rowspan="1" colspan="3" class="text-center">Duration in Warehouse (Hour)</th>
+                <th rowspan="2" class="text-center">Not Yet Scan Out</th>
               </tr>
               <tr>
-                <th style="text-align: center;">Average</th>
-                <th style="text-align: center;">Min</th>
-                <th style="text-align: center;">Max</th>
+                <th class="text-center">00:00 - 06:59</th>
+                <th class="text-center">07:00 - 11:00</th>
+                <th class="text-center">11:01 - 15:00</th>
+                  <th class="text-center">15:01 - 19:00</th>
+                  <th class="text-center">19:01 - 23:59</th>
+                <th class="text-center">Average</th>
+                <th class="text-center">Min</th>
+                <th class="text-center">Max</th>
               </tr>
             </thead>
           </table>
@@ -99,6 +105,11 @@ function getDataTable(dateSelected){
         }},
         {data:'Datenames'},
         {data:'CountofVihicle', class: 'text-right'},
+        {data:'time_1', class: 'text-center'},
+        {data:'time_2', class: 'text-center'},
+        {data:'time_3', class: 'text-center'},
+        {data:'time_4', class: 'text-center'},
+        {data:'time_5', class: 'text-center'},
         {data:'AvginWH', class: 'text-right'},
         {data:'Min_in_WH', class: 'text-right'},
         {data:'Max_in_WH', class: 'text-right'},
