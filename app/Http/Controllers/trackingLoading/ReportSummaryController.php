@@ -23,9 +23,9 @@ class ReportSummaryController extends Controller
         $akhir = $inputDate[1];
         $akhir = explode("/", $akhir);
         $akhir = $akhir[2] . "-" . $akhir[1] . "-" . $akhir[0];
-        // $query = DB::table("view_report_summary_new_bm_visit_track")->where('debtor_acct', auth()->user()->tenant_code);
-        // $data = $query->whereRaw("Dates BETWEEN '$awal' AND '$akhir'")->get();
-        $data = DB::select($this->query($awal, $akhir, auth()->user()->tenant_code));
+        $query = DB::table("view_report_summary_new_bm_visit_track")->where('debtor_acct', auth()->user()->tenant_code);
+        $data = $query->whereRaw("convert(date, Dates) >= '$awal' and convert(date, Dates) <= '$akhir'")->get();
+        // $data = DB::select($this->query($awal, $akhir, auth()->user()->tenant_code));
         
         return $dataTables->of(collect($data))
         ->rawColumns([])->make(true);

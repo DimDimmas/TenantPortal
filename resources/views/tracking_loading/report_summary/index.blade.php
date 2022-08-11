@@ -100,7 +100,7 @@ function getDataTable(dateSelected){
         // {data:'entity_name', orderable: false, searchable: false, visible: false},
         // {data:'project_no', orderable: false, searchable: false, visible: false},
         // {data:'debtor_acct', orderable: false, searchable: false, visible: false},
-        {data:'Dates', render: function(data, type, row, meta) {
+        {data:'Dates', render: function(data, type, row, meta){
           return moment(row.Dates).format('DD/MM/YYYY');
         }},
         {data:'Datenames'},
