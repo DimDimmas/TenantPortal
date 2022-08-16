@@ -136,6 +136,9 @@ class historyController extends Controller
 
         $data = $validation->valid();
         $id = $data['id'] ? $data['id'] : null;
+        $data['police_no'] = $data['police_no'] ? strtoupper($data['police_no']) : null;
+        $data['identity_no'] = $data['identity_no'] ? strtoupper($data['identity_no']) : null;
+        $data['identity_name'] = $data['identity_name'] ? strtoupper($data['identity_name']) : null;
         unset($data['id']);
         unset($data['_token']);
         unset($data['_method']);
