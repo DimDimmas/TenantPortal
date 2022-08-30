@@ -70,7 +70,7 @@
                 <a href="{{ route('history_tracking_loading') }}">History</a>
               </li>
               <li class="{{ request()->is('tracking-loading/not-scan-out') ? 'active' : '' }}">
-                <a href="{{ route('notscanout_tracking_loading') }}">Not Scan Out</a>
+                <a href="{{ route('notscanout_tracking_loading') }}">Form Lost Ticket</a>
               </li>
             </ul>
           </li>
