@@ -40,6 +40,7 @@
             "targets": 0,
             "orderable": false,
             "searchable": false,
+            "visible": true,
           }
         ],
         'createdRow': function( row, data, dataIndex ) {
@@ -51,6 +52,24 @@
             .attr('data-debtor_acct', data.debtor_acct)
             .attr('data-trx_amt', data.mbase_amt);
         },
+        footerCallback: function(row, data, start, end, display){
+          var api = this.api();
+
+          // Remove the formatting to get integer data for summation
+          var intVal = function (i) {
+            return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+          };
+
+          // computing column Total of the complete result 
+          var totInvAmt = api
+                .column( 3 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+        $( api.column( 0 ).footer() ).html('Total');
+        $( api.column( 3 ).footer() ).html(parseInt(totInvAmt).toLocaleString()+'.00');
+        }
       })
     }
     table()

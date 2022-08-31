@@ -77,6 +77,13 @@
               <th>Delivery Date</th>
             </tr>
           </thead>
+          <tfoot>
+            <tr>
+              <th colspan="3"></th>
+              <th style="text-align: right;"></th>
+              <th></th>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>
