@@ -60,9 +60,13 @@
     <div class="iq-menu-horizontal">
       <nav class="iq-sidebar-menu">
         <ul id="iq-sidebar-toggle" class="iq-menu d-flex">
+
+
           <li class="{{ str_contains(Request::url(), 'news') ? 'active' : '' }}">
             <a href="{{ route('news') }}" class="iq-waves-effect collapsed" aria-expanded="false"><i class="ri-article-line"></i><span>News</span></a>
           </li>
+
+
           <li class="{{ str_contains(Request::url(), 'tracking-loading') ? 'active' : '' }}">
             <a href="#tracking-loading" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="fa fa-truck" aria-hidden="true"></i><span>Tracking Loading</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>  
             <ul id="tracking-loading" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -79,6 +83,18 @@
               </li>
             </ul>
           </li>
+
+
+          <li class="{{ str_contains(Request::url(), 'invoice') ? 'active' : '' }}">
+            <a href="#invoice" class="iq-waves-effect collapse" data-toggle="collapse" aria-expanded="false"><i class="fas fa-file-invoice"></i><span>Invoice</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+            <ul id="invoice" class="iq-submenu collapse" data-parent="#id-sidebar-toggle">
+              <li class="{{ request()->is('invoice') ? 'active' : '' }}">
+                <a href="{{ route('invoice_index') }}">History</a>
+              </li>
+            </ul>
+          </li>
+
+
           <li class="{{ str_contains(Request::url(), 'corrective') ? 'active' : '' }}">
             <a href="#corrective" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-community-line"></i><span>Helpdesk</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>  
             <ul id="corrective" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -90,6 +106,8 @@
               </li>
             </ul>
           </li>
+
+
           <li class="{{ str_contains(Request::url(), 'meter') ? 'active' : '' }}">
             <a href="#meter" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-keyboard-box-line"></i><span>Meter</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>  
             <ul id="meter" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -101,6 +119,8 @@
               </li>
             </ul>
           </li>
+
+
           @if (Auth::user()->entity_project == '301502' && trim(Auth::user()->project_no) == '210101')
             <li class="{{ str_contains(Request::url(), 'overtime') ? 'active' : '' }}">
               <a href="#overtime" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="fa fa-building" aria-hidden="true"></i><span>Overtime</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>  
@@ -114,6 +134,8 @@
               </ul>
             </li>
           @endif
+
+
         </ul>
       </nav>
     </div>

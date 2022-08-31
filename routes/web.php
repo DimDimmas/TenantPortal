@@ -122,6 +122,11 @@ Route::middleware('auth')->group(function () {
             Route::post('/store', 'trackingLoading\notScanOutController@store');
             Route::get('/print-pdf', 'trackingLoading\notScanOutController@generate_bak');
         });
+    });
 
+    Route::prefix('invoice')->group(function () {
+        Route::get('/', 'invoice\invoiceController@index')->name('invoice_index');
+        Route::get('/listData', 'invoice\invoiceController@listData');
+        Route::post('/getDataModal', 'invoice\invoiceController@getDataModal');
     });
 });
