@@ -34,6 +34,7 @@
           { data: 'description'},
           { data: 'mbase_amt', sClass: 'text-right'},
           { data: 'sender_date'},
+          { data: 'receipt_date'},
         ],
         "columnDefs": [
           {
