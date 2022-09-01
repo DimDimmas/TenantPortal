@@ -134,7 +134,7 @@
           <body>
             <div class="header">
               <h2>Report Tracking Loading</h2>
-              <h3>'.$tenant->name.'</h3>
+              <h3>'.$tenant->company_name.'</h3>
             </div>
             <div class="container" style="margin-top: 50px;">
               <div class="filter" style="margin-bottom: 20px;">

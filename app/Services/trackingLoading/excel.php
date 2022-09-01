@@ -105,7 +105,7 @@
       $sheet =  $spreadsheet->getActiveSheet();
 
       $sheet->setCellValue('A1', 'REPORT TRACKING LOADING '.$dateSelected);
-      $sheet->setCellValue('A2', $tenant->name);
+      $sheet->setCellValue('A2', $tenant->company_name);
 
       $sheet->setCellValue('A4', 'No');
       $sheet->setCellValue('B4', 'Type');

@@ -123,12 +123,18 @@ Route::middleware('auth')->group(function () {
             Route::post('/store', 'trackingLoading\notScanOutController@store');
             Route::get('/print-pdf', 'trackingLoading\notScanOutController@generate_bak');
         });
+    });
 
-        Route::prefix("report-summary")->group(function () {
-            Route::get('/', 'trackingLoading\ReportSummaryController@index')->name('report_summary_tracking_loading');
-            Route::get('/get-data-table', 'trackingLoading\ReportSummaryController@getDataTable');
-            Route::get('/print-pdf', 'trackingLoading\ReportSummaryController@generate_bak');
-        });
+    Route::prefix("report-summary")->group(function () {
+        Route::get('/', 'trackingLoading\ReportSummaryController@index')->name('report_summary_tracking_loading');
+        Route::get('/get-data-table', 'trackingLoading\ReportSummaryController@getDataTable');
+        Route::get('/print-pdf', 'trackingLoading\ReportSummaryController@generate_bak');
+    });
+
+    Route::prefix('invoice')->group(function () {
+        Route::get('/', 'invoice\invoiceController@index')->name('invoice_index');
+        Route::get('/listData', 'invoice\invoiceController@listData');
+        Route::post('/getDataModal', 'invoice\invoiceController@getDataModal');
 
     });
 });

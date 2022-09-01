@@ -69,7 +69,6 @@
 
 {{-- toastr --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
 <script>
     function submitAjax(form_id) {
         $("button[type='submit']").attr('disabled', true);
