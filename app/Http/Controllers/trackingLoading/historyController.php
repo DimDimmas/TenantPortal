@@ -59,7 +59,12 @@ class historyController extends Controller
   {
     $dateSelected = explode(" - ", $request->dateSelected);
     $awal = $dateSelected[0];
+    $awal = explode("/", $awal);
+    $awal = $awal[2] . '-' . $awal[1] . '-' . $awal[0];
+
     $akhir = $dateSelected[1];
+    $akhir = explode("/", $akhir);
+    $akhir = $akhir[2] . '-' . $akhir[1] . '-' . $akhir[0];
 
     $data = DB::table("view_bm_visit_track")
       ->selectRaw("
@@ -70,9 +75,7 @@ class historyController extends Controller
 				) AS difference
       ")
       ->where("debtor_acct", auth()->user()->tenant_code)
-      ->whereRaw("FORMAT(scan_in, 'dd/MM/yyyy') BETWEEN '$awal' AND '$akhir' ");
-
-    // $data = $this->query($_GET['dateSelected']);
+      ->whereRaw("CAST(scan_in AS DATE) BETWEEN '$awal' AND '$akhir' ");
 
     return DataTables::of($data)
             ->addColumn('img_capture', function($data){
