@@ -61,6 +61,7 @@ class invoiceController extends Controller
               ROW_NUMBER() OVER (ORDER BY a.receipt_no) AS id,
               a.receipt_no,
               FORMAT(a.sender_date, 'dd/MM/yyyy') sender_date,
+              FORMAT(a.receipt_date, 'dd/MM/yyyy') receipt_date,
               a.entity_project,
               a.project_no,
               b.debtor_acct,

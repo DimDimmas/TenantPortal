@@ -75,12 +75,14 @@
               <th>Description</th>
               <th>Invoice Amount</th>
               <th>Delivery Date</th>
+              <th>Receipt Date</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
               <th colspan="3"></th>
               <th style="text-align: right;"></th>
+              <th></th>
               <th></th>
             </tr>
           </tfoot>
