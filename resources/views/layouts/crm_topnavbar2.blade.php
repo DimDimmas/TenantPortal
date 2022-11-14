@@ -97,7 +97,7 @@
             </a>
             <ul id="preventive" class="iq-submenu collapse" data-parent="#id-sidebar-toggle">
               <li class="{{ request()->segment(3) == "maintenances" ? 'active' : '' }}">
-                <a href="{{ route('preventive.maintenances.index') }}">Maintenances</a>
+                <a href="{{ route('preventive.maintenances.index') }}">Assignment</a>
               </li>
               <li class="{{ request()->segment(3) == "done-maintenances" ? 'active' : '' }}">
                 <a href="{{ route('preventive.done_maintenances.index') }}">Done Maintenances</a>

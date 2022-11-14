@@ -23,7 +23,7 @@
   <div class="iq-card">
     <div class="iq-card-header d-flex justify-content-between">
       <div class="iq-header-title mt-3">
-      <h4 class="card-title"><b>Preventive Maintenances</b></h4>
+      <h4 class="card-title"><b>Assignment</b></h4>
       </div>
     </div>
     <hr>
@@ -44,8 +44,8 @@
           <div class="">
             <button type="button" class="btn btn-primary" onclick="shareTask();"><i class="fa-solid fa-share-from-square" aria-hidden="true"></i>&nbsp; Assignment</button>
             <button type="button" class="btn btn-secondary" onclick="openModalReschedule();"><i class="fa-solid fa-repeat" aria-hidden="true"></i>&nbsp; Reschedule</button>
-            <button type="button" class="btn btn-success" onclick="window.location.href = '/preventive/maintenances/approval';"><i class="fa-solid fa-handshake" aria-hidden="true"></i>&nbsp; Need Approval</button>
-            <button type="button" class="btn btn-dark" onclick="refreshCheckListAll();"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>&nbsp; Refresh Checklist</button>
+            {{-- <button type="button" class="btn btn-success" onclick="window.location.href = '/preventive/maintenances/approval';"><i class="fa-solid fa-handshake" aria-hidden="true"></i>&nbsp; Need Approval</button> --}}
+            <button type="button" class="btn btn-success" onclick="refreshCheckListAll();"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>&nbsp; Refresh Checklist</button>
           </div> 
           <div class="clearfix"></div>
         </div>
