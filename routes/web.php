@@ -81,17 +81,17 @@ Route::middleware('auth')->group(function () {
     Route::resource('overtime', overtimeController::class);
 
 
-    Route::get('/preventive/schedule/', 'underconstructionController@index')->name('preventive_schedule');    
-    Route::resource('preventive', scheduleController::class);
+    // Route::get('/preventive/schedule/', 'underconstructionController@index')->name('preventive_schedule');    
+    // Route::resource('preventive', scheduleController::class);
 
     Route::get('/billing/information/', 'underconstructionController@index')->name('billing_information');    
-    Route::resource('billing', billingController::class);
+    // Route::resource('billing', billingController::class);
 
     Route::get('/aggreement/information/', 'underconstructionController@index')->name('agreement_information');    
-    Route::resource('agreement', aggreementController::class);
+    // Route::resource('agreement', aggreementController::class);
 
     Route::get('/vehicle/history/', 'underconstructionController@index')->name('vehicle_history');    
-    Route::resource('vehicle', vehicleHistoryController::class);
+    // Route::resource('vehicle', vehicleHistoryController::class);
 
     // route profile
     Route::get('/profile/{tenant_person}', 'profile\profileController@index');
@@ -137,4 +137,34 @@ Route::middleware('auth')->group(function () {
         Route::post('/getDataModal', 'invoice\invoiceController@getDataModal');
 
     });
+});
+
+Route::middleware("auth")->prefix("preventive")->namespace('Preventives')->group(function() {
+
+    Route::prefix("maintenances")->group(function() {
+        Route::get("/", "MaintenanceController@index")->name("preventive.maintenances.index");
+        Route::post("datatable", "MaintenanceController@datatable")->name("preventive.maintenances.datatable");
+        Route::post("share-tasks", "MaintenanceController@shareTasks")->name("preventive.maintenance.share_tasks");
+        Route::post("refresh-check-list", "MaintenanceController@refreshCheckListAll")->name("preventive.maintenances.check_list_all");
+
+        Route::prefix("/{id}/check-list")->group(function() {
+            Route::get("/", "CheckListController@index")->name("check_list_maintenances.index");
+            Route::post("datatable", "CheckListController@dataTableCheckList")->name("datatable_check_list.index");
+        });
+
+        Route::prefix("check-standard")->group(function() {
+            Route::post("/{check_list_id}", "CheckListController@dataTableCheckStandardsByCheckListId")->name("check_standard.datatable");
+        });
+    });
+
+    Route::prefix("done-maintenances")->group(function() {
+        Route::get("/", "DoneMaintenanceController@index")->name("preventive.done_maintenances.index");
+    });
+    
+    Route::prefix("report-actual-vs-schedule")->group(function() {
+        Route::get("/", "ReportActualVsScheduleController@index")->name("preventive.report_actual_vs_schedules.index");
+        Route::get("excel", "ReportActualVsScheduleController@exportExcel")->name("preventive.report_actual_vs_schedules.excel");
+        Route::post("table-index", "ReportActualVsScheduleController@tableIndex")->name("preventive.report_actual_vs_schedules.table_index");
+    });
+
 });

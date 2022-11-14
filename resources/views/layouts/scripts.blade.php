@@ -70,6 +70,16 @@
 {{-- toastr --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script>
+    function tampilLoader() {
+        jQuery("#load").fadeIn();
+        jQuery("#loading").delay().fadeIn("");
+    }
+
+    function tutupLoader() {
+        jQuery("#load").fadeOut();
+        jQuery("#loading").delay().fadeOut("");
+    }
+    
     function submitAjax(form_id) {
         $("button[type='submit']").attr('disabled', true);
         var form = $(form_id),

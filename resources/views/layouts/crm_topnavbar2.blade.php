@@ -89,6 +89,27 @@
             </ul>
           </li>
 
+          <!-- Preventive Maintenance khusus lazada -->
+          {{-- @if(in_array(auth()->user()->tenant_code, ['MDP002', 'MDPO1', 'MDPO2', 'MDPW01', 'MDPW02', 'MDP02'])) --}}
+          <li class="{{ request()->segment(2) == 'preventive' ? 'active' : '' }}">
+            <a href="#preventive" class="iq-waves-effect collapse" data-toggle="collapse" aria-expanded="false">
+              <i class="fas fa-wrench" aria-hidden="true"></i><span>Preventive</span><i class="ri-arrow-right-s-line iq-arrow-right"></i>
+            </a>
+            <ul id="preventive" class="iq-submenu collapse" data-parent="#id-sidebar-toggle">
+              <li class="{{ request()->segment(3) == "maintenances" ? 'active' : '' }}">
+                <a href="{{ route('preventive.maintenances.index') }}">Maintenances</a>
+              </li>
+              <li class="{{ request()->segment(3) == "done-maintenances" ? 'active' : '' }}">
+                <a href="{{ route('preventive.done_maintenances.index') }}">Done Maintenances</a>
+              </li>
+              <li class="{{ request()->segment(3) == "report-actual-vs-schedule" ? 'active' : '' }}">
+                <a href="{{ route('preventive.report_actual_vs_schedules.index') }}">Report Actual VS Schedule</a>
+              </li>
+            </ul>
+          </li>
+          {{-- @endif --}}
+          <!-- End Of Preventive Maintenance -->
+
           <li class="{{ str_contains(Request::url(), 'invoice') ? 'active' : '' }}">
             <a href="#invoice" class="iq-waves-effect collapse" data-toggle="collapse" aria-expanded="false"><i class="fas fa-file-invoice"></i><span>Invoice</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="invoice" class="iq-submenu collapse" data-parent="#id-sidebar-toggle">
