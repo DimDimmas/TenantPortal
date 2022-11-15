@@ -33,4 +33,14 @@ class MaintenanceController extends Controller
         ini_set('max_execution_time', '9999999999999999999999');
         ProccessRefreshCheckListPreventiveJob::dispatch();
     }
+
+    public function dataTableReschedule(Request $request) {
+        $data = $this->maintenanceService->dataTableReschedule($request);
+        return $data->content();
+    }
+
+    public function reschedule($id, Request $request) {
+        $results = $this->maintenanceService->reschedule($id, $request);
+        return response()->json($results, $results['code']);
+    }
 }

@@ -18,7 +18,23 @@ class Maintenance extends Model
     ];
 
     public function getDataTable($request) {
-        $data  = DB::table("view_transaksi_preventive_maintenances")->whereNotIn('status', ['6', '20']);
+        $data  = DB::table("view_transaksi_preventive_maintenances")->whereNotIn('status', ['6', '20'])
+        ->where("schedule_date", "<=", date("Y-m-d"));
+
+        // cek kondisi lazada
+        $userEntity = trim(auth()->user()->entity_project) ?? null;
+        $userProject  = trim(auth()->user()->project_no) ?? null;
+        $userTenant  = trim(auth()->user()->tenant_id) ?? null;
+        $data = $data
+            ->where('entity_project', $userEntity)->where('project_code', $userProject)
+            // ->where("tenant_id", $userTenant)
+        ;
+        return $data;
+    }
+
+    public function getDataTableReschedule($request) {
+        $data  = DB::table("view_transaksi_preventive_maintenances")->whereIn('status', [1, 11, 19])
+        ->where("schedule_date", "<=", date("Y-m-d"));
 
         // cek kondisi lazada
         $userEntity = trim(auth()->user()->entity_project) ?? null;
@@ -37,6 +53,10 @@ class Maintenance extends Model
 
     public function asset_group() {
         return $this->belongsTo(PmAssetGroup::class, 'pm_asset_group_id');
+    }
+
+    public function asset() {
+        return $this->belongsTo(PmAsset::class, 'pm_asset_id');
     }
 
     public function asset_detail() {

@@ -43,34 +43,35 @@
           </div>
           <div class="">
             <button type="button" class="btn btn-primary" onclick="shareTask();"><i class="fa-solid fa-share-from-square" aria-hidden="true"></i>&nbsp; Assignment</button>
-            <button type="button" class="btn btn-secondary" onclick="openModalReschedule();"><i class="fa-solid fa-repeat" aria-hidden="true"></i>&nbsp; Reschedule</button>
+            <button type="button" class="btn btn-secondary" onclick="openModal();"><i class="fa-solid fa-repeat" aria-hidden="true"></i>&nbsp; Reschedule</button>
             {{-- <button type="button" class="btn btn-success" onclick="window.location.href = '/preventive/maintenances/approval';"><i class="fa-solid fa-handshake" aria-hidden="true"></i>&nbsp; Need Approval</button> --}}
             <button type="button" class="btn btn-success" onclick="refreshCheckListAll();"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>&nbsp; Refresh Checklist</button>
           </div> 
           <div class="clearfix"></div>
         </div>
       </div>
-      <div class="table-responsive">
-        <table id="table" class="table table-striped table-hover display mb-2" style="color: #353535;">
-            <thead>
-              <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Action</th>
-                <th scope="col">Status</th>
-                <th scope="col">Ticket</th>
-                <th scope="col">Location</th>
-                <th scope="col">Barcode</th>
-                <th scope="col">Asset Name</th>
-                <th scope="col">Schedule Date</th>
-                <th scope="col">Assign To</th>
-                <th scope="col">Assign Date</th>
-              </tr>
-            </thead>
-        </table>
-      </div>
+        <div class="table-responsive">
+            <table id="table" class="table table-striped table-hover display mb-2" style="color: #353535;">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Ticket</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Barcode</th>
+                    <th scope="col">Asset Name</th>
+                    <th scope="col">Schedule Date</th>
+                    <th scope="col">Assign To</th>
+                    <th scope="col">Assign Date</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
     </div>
   </div>
 </div>
+@include("preventives.maintenances.reschedules.modal_list")
 @endsection
 
 @push('scripts')
@@ -333,40 +334,155 @@
 
     function changeScheduleDate(event, data)
     {
-    let value = event.target.value;
-    let datas = JSON.parse(data);
-    let preventiveId = datas.id;
-    let trans_code = datas.trans_code;
-    $.ajax({
-        url: `/bm/preventive-maintenance/transactions/schedule/${preventiveId}`,
-        type: 'PATCH',
-        data: {
-            "_token": $('meta[name="csrf-token"]').attr('content'),
-            "_method": "PATCH",
-            "preventive_id": parseInt(preventiveId),
-            "trans_code" : trans_code,
-            "schedule_date" : value,
-        },
-        success: (result) => {
-        if(result.error)
-        {
-            Swal.fire({
-                icon: 'error',
-                title: `${result.header}`,
-                text: `${result.message}`,
-            });
-        }
-        $("#tblTransactionPreventiveMaintenance").DataTable().ajax.reload();
-        $("#tblPreventiveUnassignment").DataTable().ajax.reload();
-        },
-        error: (xhr, ajaxOptions, thrownError) => {
-        Swal.fire({
-            icon: 'error',
-            title: `${xhr.status} : ${xhr.statusText}`,
-            text: `${xhr.statusText}`,
+        let value = event.target.value;
+        let datas = JSON.parse(data);
+        let preventiveId = datas.id;
+        let trans_code = datas.trans_code;
+        $.ajax({
+            url: `/preventive/maintenances/reschedule/${preventiveId}`,
+            type: 'PATCH',
+            data: {
+                "_token": $('meta[name="csrf-token"]').attr('content'),
+                "_method": "PATCH",
+                "preventive_id": parseInt(preventiveId),
+                "trans_code" : trans_code,
+                "schedule_date" : value,
+            },
+            success: (result) => {
+                if(result.error)
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: `${result.header}`,
+                        text: `${result.message}`,
+                    });
+                }
+                table.ajax.reload();
+                tableReschedule.ajax.reload();
+            },
+            error: (xhr, ajaxOptions, thrownError) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: `${xhr.status} : ${xhr.statusText}`,
+                    text: `${xhr.statusText}`,
+                });
+                table.ajax.reload();
+                tableReschedule.ajax.reload();
+            }
         });
-        }
+    }
+
+    let tableReschedule = $("#table-reschedule").DataTable({
+        "processing": true,
+        "serverSide": true,
+        "responsive": true,
+        "order": [[ 7, "ASC" ]],
+        "ajax":{
+            url: '{{ route("preventive.maintenances.datatable_reschedule") }}',
+            "dataType": "json",
+            "type": "POST",
+            "data":{ _token: "{{csrf_token()}}"}
+        },
+        columns: [
+            { data:'id' } ,
+            { 
+                data: null, 
+                name:'action',
+                class: 'text-center',
+                width: '5%',
+                render: function(data, type, row) {
+                    return `
+                        <div class="dropdown">
+                            <span class="text-dark" id="dropdownMenuButton5" data-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </span>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton5">
+                                <a class="dropdown-item" href="/preventive/maintenances/${row.id}/check-list"><i class="ri-eye-fill mr-2"></i>View</a>
+                                <!-- <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
+                                <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
+                                <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
+                                <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a> -->
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            { 
+                data:'status_name',
+                render: function(data, type, row) {
+                    switch(row.status){
+                        case "1" :
+                            classs = "badge-info";
+                            break;
+                        case "2" :
+                            classs = "badge-primary";
+                            break;
+                        case "4" :
+                            classs = "badge-primary";
+                            break;
+                        case "6" :
+                            classs = "badge-success";
+                            break;
+                        case "15" :
+                            classs = "badge-danger";
+                        case "16" :
+                            classs = "badge-warning";
+                            break;
+                        case "19" :
+                            classs = "badge-danger";
+                            break;
+                        case "20" :
+                            classs = "badge-danger";
+                        default:
+                            classs = "badge-info";
+                    }
+                    return `<span class='badge ${classs}'>${row.status_name}</span>`;
+                }
+            } ,
+            { data:'trans_code' },
+            { data:'location_name' } ,
+            { data:'barcode'} ,
+            { data:'asset_name'} ,
+            { 
+                data:'schedule_date',
+                // render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' ),
+            } ,
+            { 
+                data:'assign_to',
+            } ,
+            {
+                data: 'assign_date',
+                render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' ),
+            }
+        ],
+        drawCallback: function() {
+            $(".assign_to_table").select2({
+                placeholder: '-- Pilih Teknisi --',
+                allowClear: false,
+                width: '100%',
+            })
+        },
+        "columnDefs": [
+            {
+                "targets": [0],
+                "orderable": true,
+                "searchable": false,
+                "visible": false,
+            },
+            {
+                "targets": [1],
+                "orderable": false,
+                "searchable": false,
+                "visible": true,
+            },
+        ],
+        // bDestroy: true,
     });
+
+    // open modal
+    function openModal() {
+        $(".modal").modal('show');
+        tableReschedule.ajax.reload();
     }
 
   </script>
