@@ -265,4 +265,11 @@ class MaintenancesService {
 
         return $results;
     }
+
+    public function dataTableHistories($request) {
+        $data = $this->maintenanceModel->getDataTableHistories($request);
+        return DataTables::of($data)
+        ->rawColumns([])
+        ->make(true);
+    }
 }

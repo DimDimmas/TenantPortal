@@ -1,10 +1,6 @@
 @extends('layouts.crm_main')
 
 @push('other-css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css">
     <style>
         .btn{
             border-radius: 0px;
@@ -27,40 +23,39 @@
             </div>
         </div>
         <hr>
-        <div class="table-responsive center mt-5">
-            <div class="col-xs-auto col-sm-auto col-md-auto col-lg-auto mb-3">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-5 pull-right">          
-                <div class="pull-left"></div>
-                <div class="clearfix"></div>
-            </div>
+        <div class="iq-card-body">
+            <div class="d-flex justify-content-start my-3">
+                <button class="btn btn-warning mx-1" onclick="history.back();">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back
+                </button>
+                <button class="btn btn-success mx-1" onclick="openModalHistory();">
+                    <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> History
+                </button>
             </div>
             <div class="table-responsive">
-            <table id="table" class="table table-striped table-bordered table-hover display mb-2" style="color: #353535;">
-                <thead>
-                    <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Action</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Value</th>
-                    </tr>
-                </thead>
-            </table>
+                <table id="table" class="table table-striped table-bordered table-hover display mb-2" style="color: #353535;">
+                    <thead>
+                        <tr>
+                            <th scope="col">Action</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
 </div>
 @include("preventives.check_standards.modal_datatable_by_check_list_id")
+@include("preventives.maintenances.histories.modal_list")
 @endsection
 
 @push('scripts')
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>  
+<script> 
+    let trans_code = '{{ $preventive->trans_code }}';
     toastr.options = {
       "closeButton" : true,
       "progressBar" : true
@@ -92,10 +87,10 @@
     };
 
     let table = $("#table").DataTable({
-        "processing": true,
+        "processing": false,
         "serverSide": true,
-        "responsive": true,
-        "order": [[ 0, "ASC" ]],
+        "responsive": false,
+        "order": [[ 2, "ASC" ]],
         "ajax":{
             url: '{{ route("datatable_check_list.index", $preventive->id) }}',
             "dataType": "json",
@@ -103,7 +98,6 @@
             "data":{ _token: "{{csrf_token()}}", _method: "POST"}
         },
         columns: [
-            { data:'id' } ,
             { 
                 data: null, 
                 name:'action',
@@ -154,23 +148,74 @@
                 "targets": [0],
                 "orderable": true,
                 "searchable": false,
-                "visible": false,
-            },
-            {
-                "targets": [1],
-                "orderable": false,
-                "searchable": false,
                 "visible": true,
             },
-        ]
+            // {
+            //     "targets": [1],
+            //     "orderable": false,
+            //     "searchable": false,
+            //     "visible": true,
+            // },
+        ],
+        initComplete: function () {
+            var api = this.api();
+
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('#table th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                // $(cell).html('<input type="text" placeholder="' + title + '" />');
+                // $(cell).html("");
+                if(title !== "Action") $(cell).html('<input type="text" placeholder="' + title + '" class="text-dark" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('#table th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // console.log($(this).val());return;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                // this.value != ''
+                                //     ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                //     : '',
+                                // this.value != '',
+                                // this.value == ''
+                                $(this).val(), false, false, true
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+                });
+        },
     });
 
     function openModal(id) {
-        $(".modal").modal('show');
+        $("#modal-checkstandard").modal('show');
         $("#table-check-standard").DataTable({
-            "processing": true,
+            "processing": false,
             "serverSide": true,
-            "responsive": true,
+            "responsive": false,
             "order": [[ 0, "ASC" ]],
             bDestroy: true,
             "ajax":{
@@ -280,6 +325,136 @@
                     "visible": true,
                 },
             ]
+        });
+    }
+
+    function openModalHistory() {
+        $("#modal-histories").modal("show");
+        $("#table-histories").DataTable({
+            order: [[6, 'DESC']],
+            responsive: false,
+            processing: false,
+            serverSide: true,
+            pageLength: 5,
+            lengthMenu: [5, 10, 25, 50, 100],
+            ajax: {
+                url: `{{ route('preventive.maintenances.datatable_histories', $preventive->trans_code) }}`,
+                type: 'POST',
+                data: {
+                    "_token": $('meta[name="csrf-token"]').attr('content'),
+                    "_method": "POST",
+                    "preventiveId" : trans_code,
+                    "pm_asset_detail_id" : "{{ $preventive->pm_asset_detail_id }}"
+                },
+            },
+            columns: [
+                {data: 'trans_code', name: 'trans_code', },
+                { 
+                    data:'status_name',
+                    render: function(data, type, row) {
+                        switch(row.status){
+                            case "1" :
+                                classs = "badge-info";
+                                break;
+                            case "2" :
+                                classs = "badge-primary";
+                                break;
+                            case "4" :
+                                classs = "badge-primary";
+                                break;
+                            case "6" :
+                                classs = "badge-success";
+                                break;
+                            case "15" :
+                                classs = "badge-danger";
+                            case "16" :
+                                classs = "badge-warning";
+                                break;
+                            case "19" :
+                                classs = "badge-danger";
+                                break;
+                            case "20" :
+                                classs = "badge-danger";
+                            default:
+                                classs = "badge-info";
+                        }
+                        return `<span class='badge ${classs}'>${row.status_name}</span>`;
+                    }
+                } ,
+                {data: 'total_value', name: 'total_value'},
+                {data: 'location_name', name: 'location_name'},
+                {data: 'barcode', name: 'barcode'},
+                {data: 'asset_name', name: 'asset_name'},
+                { 
+                    data:'schedule_date',
+                    render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' ),
+                } ,
+                {data: 'emp_name', name: 'emp_name'},
+                
+                {
+                    data: 'assign_date', 
+                    render: $.fn.dataTable.render.moment( 'DD/MM/YYYY' ),
+                },
+            ],
+            "columnDefs": [
+                {
+                    "targets": [ 0 ],
+                    "orderable": false,
+                    "searchable": false
+                },
+            ],
+            bDestroy: true, // for destroy datatable and call it again,
+            initComplete: function () {
+                var api = this.api();
+
+                // For each column
+                api
+                    .columns()
+                    .eq(0)
+                    .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    var cell = $('#table-histories th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    var title = $(cell).text();
+                    // $(cell).html('<input type="text" placeholder="' + title + '" />');
+                    // $(cell).html("");
+                    if(title !== "Action") $(cell).html('<input type="text" placeholder="' + title + '" class="text-dark" />');
+
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('#table-histories th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('keyup change', function (e) {
+                            e.stopPropagation();
+
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                            var cursorPosition = this.selectionStart;
+                            // console.log($(this).val());return;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    // this.value != ''
+                                    //     ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    //     : '',
+                                    // this.value != '',
+                                    // this.value == ''
+                                    $(this).val(), false, false, true
+                                )
+                                .draw();
+
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                        });
+                    });
+            },
         });
     }
 

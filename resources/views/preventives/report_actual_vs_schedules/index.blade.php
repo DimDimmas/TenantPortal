@@ -28,25 +28,7 @@
       </div>
     </div>
     <hr>
-    <div class="table-responsive center mt-5">
-      <div class="col-xs-auto col-sm-auto col-md-auto col-lg-auto mb-3">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-5 pull-right">          
-          <div class="pull-left">
-            {{-- <table>              
-              <tr>
-                <td>Show by Date</td>
-                <td></td>
-                <td>
-                  <input type="text" class="form-control m-2" name="date_filter" id="date_filter">
-                </td>
-              </tr>
-            </table> --}}
-          </div>
-          <div class=""></div> 
-          <div class="clearfix"></div>
-        </div>
-      </div>
-
+    <div class="iq-card-body">
       <div class="row" style="margin-top:10px;margin-bottom:10px;margin-left:10px;">
         <table width=50% cellpadding="8" style="border: 0 solid #fff">
           <thead>
@@ -96,7 +78,7 @@
         </div>
       </div>
 
-      {{-- <div class="table-responsive"> --}}
+      <div class="table-responsive">
         <table id="table" class="table table-striped table-bordered display mb-2" style="color: #353535;">
             <thead>
                 <tr>
@@ -111,7 +93,7 @@
                 <tfoot></tfoot>
             </thead>
         </table>
-      {{-- </div> --}}
+      </div>
     </div>
   </div>
 </div>

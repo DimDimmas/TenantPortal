@@ -47,6 +47,22 @@ class Maintenance extends Model
         return $data;
     }
 
+    public function getDataTableHistories($request) {
+        $data  = DB::table("view_transaksi_preventive_maintenances")
+        ->where('pm_asset_detail_id', $request->pm_asset_detail_id)
+        ->where("schedule_date", "<=", date("Y-m-d"));
+
+        // cek kondisi lazada
+        $userEntity = trim(auth()->user()->entity_project) ?? null;
+        $userProject  = trim(auth()->user()->project_no) ?? null;
+        $userTenant  = trim(auth()->user()->tenant_id) ?? null;
+        $data = $data
+            ->where('entity_project', $userEntity)->where('project_code', $userProject)
+            // ->where("tenant_id", $userTenant)
+        ;
+        return $data;
+    }
+
     public function check_lists() {
         return $this->hasMany(PreventiveMaintenanceGroup::class, 'transaksi_preventive_maintenance_id');
     }

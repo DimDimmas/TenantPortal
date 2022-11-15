@@ -1,14 +1,24 @@
 @extends('layouts.crm_main')
 
 @push('other-css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css">
     <style>
-        .btn{
-            border-radius: 0px;
+        .scroll-x {
+            overflow-x: scroll !important;
+            width: 100% !important;
         }
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: dark !important;
+            opacity: 1 !important; /* Firefox */
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: dark !important;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: dark !important;
+        }
+        
         @media only screen and (max-width: 600px) and (max-width: 768px){
             #btnGeneratePdf, #btnGenerateExcel{
                 width: 100%;
@@ -27,46 +37,33 @@
       </div>
     </div>
     <hr>
-    <div class="table-responsive center mt-5">
-      <div class="col-xs-auto col-sm-auto col-md-auto col-lg-auto mb-3">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-5 pull-right">          
-          <div class="pull-left">
-            {{-- <table>              
-              <tr>
-                <td>Show by Date</td>
-                <td></td>
-                <td>
-                  <input type="text" class="form-control m-2" name="date_filter" id="date_filter">
-                </td>
-              </tr>
-            </table> --}}
-          </div>
-          <div class="">
-            <button type="button" class="btn btn-primary" onclick="shareTask();"><i class="fa-solid fa-share-from-square" aria-hidden="true"></i>&nbsp; Assignment</button>
-            <button type="button" class="btn btn-secondary" onclick="openModal();"><i class="fa-solid fa-repeat" aria-hidden="true"></i>&nbsp; Reschedule</button>
+    <div class="iq-card-body">
+        <div class="d-flex justify-content-start my-3">
+            <button type="button" class="btn btn-primary mx-1" onclick="shareTask();"><i class="fa-solid fa-share-from-square" aria-hidden="true"></i>&nbsp; Assignment</button>
+            <button type="button" class="btn btn-secondary mx-1" onclick="openModal();"><i class="fa-solid fa-repeat" aria-hidden="true"></i>&nbsp; Reschedule</button>
             {{-- <button type="button" class="btn btn-success" onclick="window.location.href = '/preventive/maintenances/approval';"><i class="fa-solid fa-handshake" aria-hidden="true"></i>&nbsp; Need Approval</button> --}}
-            <button type="button" class="btn btn-success" onclick="refreshCheckListAll();"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>&nbsp; Refresh Checklist</button>
-          </div> 
-          <div class="clearfix"></div>
+            <button type="button" class="btn btn-success mx-1" onclick="refreshCheckListAll();"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>&nbsp; Refresh Checklist</button>
         </div>
-      </div>
-        <div class="table-responsive">
-            <table id="table" class="table table-striped table-hover display mb-2" style="color: #353535;">
-                <thead>
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Action</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Ticket</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Barcode</th>
-                    <th scope="col">Asset Name</th>
-                    <th scope="col">Schedule Date</th>
-                    <th scope="col">Assign To</th>
-                    <th scope="col">Assign Date</th>
-                </tr>
-                </thead>
-            </table>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <table id="table" class="table table-striped table-hover display mb-2" style="color: #353535;">
+                        <thead>
+                        <tr>
+                            <th scope="col">Action</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Ticket</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Barcode</th>
+                            <th scope="col">Asset Name</th>
+                            <th scope="col">Schedule Date</th>
+                            <th scope="col">Assign To</th>
+                            <th scope="col">Assign Date</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
   </div>
@@ -75,10 +72,6 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>      
     // Date renderer for DataTables from cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js
@@ -106,10 +99,15 @@
         };
     };
 
+    // $('#table thead tr')
+    //   .clone(true)
+    //   .addClass('filters')
+    //   .appendTo('#table thead');
+
     let table = $("#table").DataTable({
-        "processing": true,
+        "processing": false,
         "serverSide": true,
-        "responsive": true,
+        "responsive": false,
         "order": [[ 7, "ASC" ]],
         "ajax":{
             url: '{{ route("preventive.maintenances.datatable") }}',
@@ -118,7 +116,6 @@
             "data":{ _token: "{{csrf_token()}}"}
         },
         columns: [
-            { data:'id' } ,
             { 
                 data: null, 
                 name:'action',
@@ -199,17 +196,62 @@
         "columnDefs": [
             {
                 "targets": [0],
-                "orderable": true,
-                "searchable": false,
-                "visible": false,
-            },
-            {
-                "targets": [1],
                 "orderable": false,
                 "searchable": false,
                 "visible": true,
             },
-        ]
+        ],
+        initComplete: function () {
+            var api = this.api();
+
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('#table th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                // $(cell).html('<input type="text" placeholder="' + title + '" />');
+                // $(cell).html("");
+                if(title !== "Action") $(cell).html('<input type="text" placeholder="' + title + '" class="text-dark" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('#table th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // console.log($(this).val());return;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                // this.value != ''
+                                //     ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                //     : '',
+                                // this.value != '',
+                                // this.value == ''
+                                $(this).val(), false, false, true
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+                });
+        },
     });
 
     function shareTask()
@@ -377,9 +419,9 @@
     }
 
     let tableReschedule = $("#table-reschedule").DataTable({
-        "processing": true,
+        "processing": false,
         "serverSide": true,
-        "responsive": true,
+        "responsive": false,
         "order": [[ 7, "ASC" ]],
         "ajax":{
             url: '{{ route("preventive.maintenances.datatable_reschedule") }}',
@@ -388,7 +430,6 @@
             "data":{ _token: "{{csrf_token()}}"}
         },
         columns: [
-            { data:'id' } ,
             { 
                 data: null, 
                 name:'action',
@@ -471,16 +512,60 @@
                 "targets": [0],
                 "orderable": true,
                 "searchable": false,
-                "visible": false,
-            },
-            {
-                "targets": [1],
-                "orderable": false,
-                "searchable": false,
                 "visible": true,
             },
         ],
         // bDestroy: true,
+        initComplete: function () {
+            var api = this.api();
+
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('#table-reschedule th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                // $(cell).html('<input type="text" placeholder="' + title + '" />');
+                $(cell).html("");
+                if(title !== "Action") $(cell).html('<input type="text" placeholder="' + title + '" class="text-dark" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('#table-reschedule th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                // this.value != ''
+                                //     ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                //     : '',
+                                // this.value != '',
+                                // this.value == ''
+                                $(this).val(), false, false, true
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+                });
+        },
     });
 
     // open modal

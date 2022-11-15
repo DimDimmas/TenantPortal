@@ -48,4 +48,9 @@ class MaintenanceController extends Controller
         $results = $this->maintenanceService->changeAssignTo($id, $request);
         return response()->json($results, $results['code']);
     }
+
+    public function dataTableHistories($trans_code, Request $request) {
+        $data = $this->maintenanceService->dataTableHistories($request);
+        return $data->content();
+    }
 }

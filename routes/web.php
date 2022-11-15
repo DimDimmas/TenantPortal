@@ -145,6 +145,7 @@ Route::middleware("auth")->prefix("preventive")->namespace('Preventives')->group
         Route::get("/", "MaintenanceController@index")->name("preventive.maintenances.index");
         Route::post("datatable", "MaintenanceController@datatable")->name("preventive.maintenances.datatable");
         Route::post("datatable-reschedule", "MaintenanceController@datatableReschedule")->name("preventive.maintenances.datatable_reschedule");
+        Route::post("datatable-histories/{trans_code}", "MaintenanceController@dataTableHistories")->name("preventive.maintenances.datatable_histories");
         Route::post("share-tasks", "MaintenanceController@shareTasks")->name("preventive.maintenance.share_tasks");
         Route::post("refresh-check-list", "MaintenanceController@refreshCheckListAll")->name("preventive.maintenances.check_list_all");
         Route::patch("reschedule/{id}", "MaintenanceController@reschedule")->name("preventive.maintenances.reschedule");
