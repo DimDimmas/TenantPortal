@@ -43,4 +43,9 @@ class MaintenanceController extends Controller
         $results = $this->maintenanceService->reschedule($id, $request);
         return response()->json($results, $results['code']);
     }
+
+    public function changeAssignTo($id, Request $request) {
+        $results = $this->maintenanceService->changeAssignTo($id, $request);
+        return response()->json($results, $results['code']);
+    }
 }

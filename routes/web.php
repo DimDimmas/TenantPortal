@@ -148,6 +148,7 @@ Route::middleware("auth")->prefix("preventive")->namespace('Preventives')->group
         Route::post("share-tasks", "MaintenanceController@shareTasks")->name("preventive.maintenance.share_tasks");
         Route::post("refresh-check-list", "MaintenanceController@refreshCheckListAll")->name("preventive.maintenances.check_list_all");
         Route::patch("reschedule/{id}", "MaintenanceController@reschedule")->name("preventive.maintenances.reschedule");
+        Route::patch("assign-to/{id}", "MaintenanceController@changeAssignTo")->name("preventive.maintenances.assign_to");
 
         Route::prefix("/{id}/check-list")->group(function() {
             Route::get("/", "CheckListController@index")->name("check_list_maintenances.index");

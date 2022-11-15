@@ -245,10 +245,12 @@
 
     function onChangeAssignTo(event, data)
     {
-        let valueInput = event.target.value;
+        let id = event.target.id;
+        let valueInput = $(`#${id}`).val();
+        // let valueInput = event.target.value;
         data = JSON.parse(data);
         $.ajax({
-            url: `/bm/preventive-maintenance/transactions/assign-to/${data.id}`,
+            url: `/preventive/maintenances/assign-to/${data.id}`,
             type: 'PATCH',
             data: {
                 "_token": $('meta[name="csrf-token"]').attr('content'),
@@ -257,23 +259,25 @@
                 "old" : data,
             },
             success: (result) => {
-            if(result.error)
-            {
-                Swal.fire({
-                    icon: 'error',
-                    title: `${result.header}`,
-                    text: `${result.message}`,
-                });
-            }
-            table.ajax.reload();
-            $("#tblPreventiveUnassignment").DataTable().ajax.reload();
+                if(result.error)
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: `${result.header}`,
+                        text: `${result.message}`,
+                    });
+                }
+                table.ajax.reload();
+                tableReschedule.ajax.reload();
             },
             error: (xhr, ajaxOptions, thrownError) => {
-            Swal.fire({
-                icon: 'error',
-                title: `${xhr.status} : ${xhr.statusText}`,
-                text: `${xhr.statusText}`,
-            });
+                Swal.fire({
+                    icon: 'error',
+                    title: `${xhr.statusText}`,
+                    text: `${xhr.statusText}`,
+                });
+                table.ajax.reload();
+                tableReschedule.ajax.reload();
             }
         });
     }
@@ -456,7 +460,7 @@
             }
         ],
         drawCallback: function() {
-            $(".assign_to_table").select2({
+            $(".assign_to_table_reschedule").select2({
                 placeholder: '-- Pilih Teknisi --',
                 allowClear: false,
                 width: '100%',

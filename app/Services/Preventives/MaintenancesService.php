@@ -4,6 +4,7 @@ namespace App\Services\Preventives;
 
 use App\Model\Preventives\Maintenance;
 use App\Model\Preventives\PmScheduleAsset;
+use App\Model\Preventives\PmTaskListAssetGroup;
 use App\Model\Preventives\PreventiveMaintenanceHistory;
 use DateInterval;
 use DateTime;
@@ -11,10 +12,11 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class MaintenancesService {
-    private $maintenanceModel;
+    private $maintenanceModel, $dateTime;
     public function __construct(Maintenance $maintenanceModel)
     {
         $this->maintenanceModel = $maintenanceModel;
+        $this->dateTIme = new DateTime();
     }
 
     public function datatable($request) {
@@ -96,7 +98,7 @@ class MaintenancesService {
             $date = date("Y-m-d");
 
             $select = "";
-            $select .= "<select class='form-control assign_to_table' name='assignTo$datas->id[]' id='assignTo$datas->id'
+            $select .= "<select class='form-control assign_to_table_reschedule' name='assignTo$datas->id[]' id='assignToReschedule$datas->id'
                 onchange='onChangeAssignTo(event, `$dataJson`);' multiple
                 style='height:30px !important;font-size:8pt !important;'
             >";
@@ -209,6 +211,58 @@ class MaintenancesService {
                 "message" => $err->getMessage(),  
             ];
         }
+        return $results;
+    }
+
+    public function changeAssignTo($id, $request) {
+        $results = [];
+        DB::beginTransaction();
+        try {
+            $preventive = $this->maintenanceModel->with("asset_group", "asset", "asset_detail", "check_lists")->findOrFail($id);
+
+            if(is_null($preventive->check_lists)) {
+                $shareTaskService = new ShareTaskService($this->maintenanceModel, new PmTaskListAssetGroup());
+                $shareTaskService->insertDataTaskGroupAndTaskDetail($preventive);
+            }
+
+            $assignDate = !is_null($request->input) ? date("Y-m-d") : null;
+            $emps = $request->input;
+            $emps = $emps ? implode(",", $emps) : null;
+            $data = [
+                "assign_to" => $emps,
+                "assign_date" => $assignDate,
+                "updated_at" => $this->dateTime,
+                "updated_by" => auth()->user() ? auth()->user()->tenant_code : '[System]',
+            ];
+            
+            if(!$preventive->update($data)) throw new \Exception("Terjadi kesalahan dalam memproses data. Harap hubungi administrator.", 500);
+
+            $preventive->refresh();
+            $arrayPreventive = $preventive->toArray();
+            unset($arrayPreventive['created_at']);
+            unset($arrayPreventive['created_by']);
+            unset($arrayPreventive['updated_at']);
+            unset($arrayPreventive['updated_by']);
+
+            (new PreventiveMaintenanceHistory())->insertLog($arrayPreventive);
+
+            DB::commit();
+            $results = [
+                "error" => false,
+                "code" => 200,
+                "header" => "Success",
+                "message" => "Data berhasil disimpan.",
+            ];
+        } catch(\Exception $err) {
+            DB::rollBack();
+            $results = [
+                "error" => true,
+                "code" => $err->getCode(),
+                "header" => "Error",
+                "message" => $err->getMessage(),  
+            ];
+        }
+
         return $results;
     }
 }
