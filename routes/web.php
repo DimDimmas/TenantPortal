@@ -163,6 +163,7 @@ Route::middleware("auth")->prefix("preventive")->namespace('Preventives')->group
 
     Route::prefix("done-maintenances")->group(function() {
         Route::get("/", "DoneMaintenanceController@index")->name("preventive.done_maintenances.index");
+        Route::post("datatable", "DoneMaintenanceController@dataTableHistories")->name("preventive.done_maintenances.datatable");
     });
     
     Route::prefix("report-actual-vs-schedule")->group(function() {
