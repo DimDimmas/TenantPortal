@@ -85,7 +85,7 @@ class MaintenancesService {
     }
 
     public function dataTableReschedule($request) {
-        $data = $this->maintenanceModel->getDataTable($request);
+        $data = $this->maintenanceModel->getDataTableReschedule($request);
         return DataTables::of($data)
         ->editColumn('assign_to', function($datas){
             $arrayData = [
