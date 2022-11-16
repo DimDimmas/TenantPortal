@@ -135,7 +135,9 @@
                             </div>
                         </div>
                     `;
-                }
+                },
+                orderable: false,
+                searchable: false,
             },
             { data:'asset_name' } ,
             { data:'barcode' },
