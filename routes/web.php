@@ -141,6 +141,15 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware("auth")->prefix("preventive")->namespace('Preventives')->group(function() {
 
+    Route::prefix("ownerships")->group(function() {
+        Route::get("/", "OwnershipController@index")->name("preventive.ownerships.index");
+        Route::post("datatable", "OwnershipController@datatables")->name("preventive.ownerships.datatable");
+        Route::post("datatable-schedules", "OwnershipController@datatablesSchedules")
+            ->name("preventive.ownerships.datatable_schedules");
+        Route::patch("schedules/change-schedule-date/{id}", "OwnershipController@changeScheduleDate")
+            ->name("preventive.ownerships.change_schedule_date");
+    });
+
     Route::prefix("maintenances")->group(function() {
         Route::get("/", "MaintenanceController@index")->name("preventive.maintenances.index");
         Route::post("datatable", "MaintenanceController@datatable")->name("preventive.maintenances.datatable");

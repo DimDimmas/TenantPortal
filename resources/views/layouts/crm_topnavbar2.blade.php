@@ -88,21 +88,24 @@
               <!-- Tracking Loading Report Summary (Sidik) -->
             </ul>
           </li>
-
+          
           <!-- Preventive Maintenance khusus lazada -->
           {{-- @if(in_array(auth()->user()->tenant_code, ['MDP002', 'MDPO1', 'MDPO2', 'MDPW01', 'MDPW02', 'MDP02'])) --}}
-          <li class="{{ request()->segment(2) == 'preventive' ? 'active' : '' }}">
+          <li class="{{ request()->segment(1) == 'preventive' ? 'active' : '' }}">
             <a href="#preventive" class="iq-waves-effect collapse" data-toggle="collapse" aria-expanded="false">
               <i class="fas fa-wrench" aria-hidden="true"></i><span>Preventive</span><i class="ri-arrow-right-s-line iq-arrow-right"></i>
             </a>
             <ul id="preventive" class="iq-submenu collapse" data-parent="#id-sidebar-toggle">
-              <li class="{{ request()->segment(3) == "maintenances" ? 'active' : '' }}">
+              <li class="{{ request()->segment(2) == "maintenances" ? 'active' : '' }}">
                 <a href="{{ route('preventive.maintenances.index') }}">Assignment</a>
               </li>
-              <li class="{{ request()->segment(3) == "done-maintenances" ? 'active' : '' }}">
+              <li class="{{ request()->segment(2) == "done-maintenances" ? 'active' : '' }}">
                 <a href="{{ route('preventive.done_maintenances.index') }}">Done Maintenances</a>
               </li>
-              <li class="{{ request()->segment(3) == "report-actual-vs-schedule" ? 'active' : '' }}">
+              <li class="{{ request()->segment(2) == "ownerships" ? 'active' : '' }}">
+                <a href="{{ route('preventive.ownerships.index') }}">Ownerships</a>
+              </li>
+              <li class="{{ request()->segment(2) == "report-actual-vs-schedule" ? 'active' : '' }}">
                 <a href="{{ route('preventive.report_actual_vs_schedules.index') }}">Report Actual VS Schedule</a>
               </li>
             </ul>

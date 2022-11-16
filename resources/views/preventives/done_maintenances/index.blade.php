@@ -29,21 +29,15 @@
 
 @section('content')
 
-<div class="col-xs-12 col-sm-12 col-md-12 col-xs-12">
+<div class="col-sm-12">
   <div class="iq-card">
     <div class="iq-card-header d-flex justify-content-between">
       <div class="iq-header-title mt-3">
-      <h4 class="card-title"><b>Assignment</b></h4>
+      <h4 class="card-title"><b>Done Maintenance</b></h4>
       </div>
     </div>
     <hr>
     <div class="iq-card-body">
-        <div class="d-flex justify-content-start my-3">
-            <button type="button" class="btn btn-primary mx-1" onclick="shareTask();"><i class="fa-solid fa-share-from-square" aria-hidden="true"></i>&nbsp; Assignment</button>
-            <button type="button" class="btn btn-secondary mx-1" onclick="openModal();"><i class="fa-solid fa-repeat" aria-hidden="true"></i>&nbsp; Reschedule</button>
-            {{-- <button type="button" class="btn btn-success" onclick="window.location.href = '/preventive/maintenances/approval';"><i class="fa-solid fa-handshake" aria-hidden="true"></i>&nbsp; Need Approval</button> --}}
-            <button type="button" class="btn btn-success mx-1" onclick="refreshCheckListAll();"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>&nbsp; Refresh Checklist</button>
-        </div>
         <div class="row">
             <div class="col-sm-12">
                 <div class="table-responsive">
