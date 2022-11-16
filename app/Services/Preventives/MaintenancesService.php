@@ -135,7 +135,7 @@ class MaintenancesService {
                 $select .= "</select>";
             }
 
-            $select = !is_null($datas->assign_to) ? $select : null;
+            // $select = !is_null($datas->assign_to) ? $select : null;
 
             return $datas->status == 1 ? $select : str_replace(",", "<br />", $datas->assign_to);
         })
