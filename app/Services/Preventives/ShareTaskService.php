@@ -38,37 +38,38 @@ class ShareTaskService {
                 $arrayPecah = $this->arraySplit($preventives->toArray(), (int) $totalPics);
                 
                 if(count($preventives) > 0) {
-                    $i = 0;
-                    foreach($pics as $pic) {
-                        $dataArrayIndex = $arrayPecah[$i];
+                    // $i = 0;
+                    foreach($pics as $i => $pic) {
+                        $dataArrayIndex = json_decode (json_encode ($arrayPecah[$i]), FALSE);
                         if(!empty($dataArrayIndex)) {
 
-                            foreach($preventives as $index => $preventive) {
+                            foreach($dataArrayIndex as $index => $preventive) {
+                                
+                                $save = $this->preventiveMaintenace->where('id', $preventive->id)->update([
+                                    "assign_to" => $pic->username,
+                                    "assign_date" => $this->dateTime->format("Y-m-d"),
+                                    "updated_at" => $this->dateTime->format("Y-m-d H:i:s"),
+                                    "updated_by" => auth()->user() ? auth()->user()->tenant_code : '[System]',
+                                ]);
+                                
+                                $dataPreventive = (array) $preventive;
+                                unset($dataPreventive['created_at']);
+                                unset($dataPreventive['created_by']);
+                                unset($dataPreventive['updated_at']);
+                                unset($dataPreventive['updated_by']);
+                                (new PreventiveMaintenanceHistory())->insertLog($dataPreventive);
+
                                 // cek ketersediaan check lists asset
                                 $totalCheckLists = $this->pmTaskListAssetGroup->whereAssetGroupId($preventive->pm_asset_group_id)->count();
                                 if($totalCheckLists > 0) {
-                                    $save = $this->preventiveMaintenace->where('id', $preventive->id)->update([
-                                        "assign_to" => $pic->username,
-                                        "assign_date" => $this->dateTime->format("Y-m-d"),
-                                        "updated_at" => $this->dateTime->format("Y-m-d H:i:s"),
-                                        "updated_by" => auth()->user() ? auth()->user()->tenant_code : '[System]',
-                                    ]);
-                                    
-                                    $dataPreventive = $preventive->toArray();
-                                    unset($dataPreventive['created_at']);
-                                    unset($dataPreventive['created_by']);
-                                    unset($dataPreventive['updated_at']);
-                                    unset($dataPreventive['updated_by']);
-    
-                                    (new PreventiveMaintenanceHistory())->insertLog($dataPreventive);
-                                    if($preventive->check_lists->count() == 0) {
+                                    if(count($preventive->check_lists) == 0) {
                                         $this->insertDataTaskGroupAndTaskDetail($preventive);
                                     }
                                 }
                             }
 
                         }
-                        $i++;
+                        // $i++;
                     }
                 }
             }
