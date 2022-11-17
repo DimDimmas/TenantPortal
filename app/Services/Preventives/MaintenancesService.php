@@ -39,7 +39,6 @@ class MaintenancesService {
             >";
 
             $emps = explode(',', $datas->assign_to) ?? null;
-
             $emps = $emps ? DB::table("users")->whereIn('username', $emps)->get() : null;
             $techs = $emps->pluck('username')->toArray();
 
@@ -64,17 +63,18 @@ class MaintenancesService {
                 foreach($emps as $emp) {
                     $select .= "<option value='$emp->username' selected>$emp->emp_name</option>";
                 }
-            
-                foreach($currentUserOnWorkAreaByEntityAndProject as $row)
-                {
-                    if(!in_array($row->username, $techs))
-                    {
-                        $selected = 'selected';
-                        $select .= "<option value='$row->username'>$row->emp_name</option>";
-                    }
-                }
-                $select .= "</select>";
+
             }
+
+            foreach($currentUserOnWorkAreaByEntityAndProject as $row)
+            {
+                if(!in_array($row->username, $techs))
+                {
+                    $select .= "<option value='$row->username'>$row->emp_name</option>";
+                }
+            }
+            
+            $select .= "</select>";
 
             $select = !is_null($datas->assign_to) ? $select : null;
 
@@ -227,7 +227,7 @@ class MaintenancesService {
 
             $assignDate = !is_null($request->input) ? date("Y-m-d") : null;
             $emps = $request->input;
-            $emps = $emps ? implode(",", $emps) : null;
+            $emps = !empty($emps) ? implode(",", $emps) : null;
             $data = [
                 "assign_to" => $emps,
                 "assign_date" => $assignDate,

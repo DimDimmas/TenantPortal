@@ -189,7 +189,7 @@
         drawCallback: function() {
             $(".assign_to_table").select2({
                 placeholder: '-- Pilih Teknisi --',
-                allowClear: false,
+                allowClear: true,
                 width: '100%',
             })
         },
@@ -503,7 +503,7 @@
         drawCallback: function() {
             $(".assign_to_table_reschedule").select2({
                 placeholder: '-- Pilih Teknisi --',
-                allowClear: false,
+                allowClear: true,
                 width: '100%',
             })
         },
